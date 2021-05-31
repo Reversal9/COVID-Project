@@ -1,0 +1,117 @@
+:root{
+    --main-radius: 5px;
+    --main-padding: 5px;
+}
+
+.center{
+    display: grid;
+    place-items: center;
+}
+
+/* grid layout setup*/
+.container{
+    display: grid;
+    height: 150vh;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 0.3fr 1fr 1fr 1fr 1fr 1fr 1fr 0.3fr;
+    grid-template-areas:
+        "nav nav nav nav nav"
+        "data1 data2 data3 pie_chart1 pie_chart1"
+        "data4 data5 data6 pie_chart1 pie_chart1"
+        "line_chart line_chart line_chart pie_chart2 pie_chart2"
+        "line_chart line_chart line_chart pie_chart2 pie_chart2"
+        "line_chart line_chart line_chart pie_chart3 pie_chart3"
+        "line_chart line_chart line_chart pie_chart3 pie_chart3"
+        "footer footer footer footer footer";
+    grid-gap: 0.2rem;
+}
+
+nav{
+    background: #e8ffff;
+    grid-area: nav;
+    border-radius:var(--main-radius);
+}
+
+#data1{
+    background: #bfe6ff;
+    grid-area: data1;
+    border-radius:var(--main-radius);
+}
+
+#data2{
+    background: #8cd3ff;
+    grid-area: data2;
+    border-radius:var(--main-radius);
+}
+
+#data3{
+    background:	#59bfff;
+    grid-area: data3;
+    border-radius:var(--main-radius);
+}
+
+#data4{
+    background:	#26abff;
+    grid-area: data4;
+    border-radius:var(--main-radius);
+}
+
+#data5{
+    background:	#0da2ff;
+    grid-area: data5;
+    border-radius:var(--main-radius);
+}
+
+#data6{
+    background:	#009dff;
+    grid-area: data6;
+    border-radius:var(--main-radius);
+}
+
+#line_chart{
+    background: #00ffff;
+    grid-area: line_chart;
+    border-radius:var(--main-radius);
+}
+
+#pie_chart1{
+    background: #00e5e5;
+    grid-area: pie_chart1;
+    border-radius:var(--main-radius);
+}
+
+#pie_chart2{
+    background: #00cccc;
+    grid-area: pie_chart2;
+    border-radius:var(--main-radius);
+}
+
+#pie_chart3{
+    background: #00b2b2;
+    grid-area: pie_chart3;
+    border-radius:var(--main-radius);
+}
+
+footer{
+    background: #009999;
+    grid-area: footer;
+    border-radius:var(--main-radius);
+}
+
+/* mobile layout */
+@media only screen and (max-width: 550px){
+    .container{
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 0.5fr 1fr 1fr 1fr 4fr 2fr 2fr 2fr 0.5fr;
+        grid-template-areas: 
+        "nav nav"
+        "data1 data2"
+        "data3 data4"
+        "data5 data6"
+        "line_chart line_chart"
+        "pie_chart1 pie_chart1"
+        "pie_chart2 pie_chart2"
+        "pie_chart3 pie_chart3"
+        "footer footer";
+    }
+}
