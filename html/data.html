@@ -35,7 +35,10 @@
             <h5>New Deaths</h5>
             <span id="new_deaths"></span>
         </div>
-        <div class="center" id="line_chart">line chart of cases over time</div>
+        <div class="center" id="line_chart_container">
+            <h1>line chart of cases over time</h1>
+            <canvas id="line_chart" height="200px"></canvas>
+        </div>
         <div class="center" id="pie_chart1">pie chart of recovery %</div>
         <div class="center" id="pie_chart2">pie chart of death %</div>
         <div class="center" id="pie_chart3">pie chart of population infected</div>
@@ -44,6 +47,6 @@
     </div>
     <script src="/static/js/api.js"></script>
     <script src="/static/js/data.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

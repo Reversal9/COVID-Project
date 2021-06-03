@@ -3,6 +3,7 @@
 body{
     font-family: 'Montserrat', sans-serif;
     color: white;
+    background: #ecf0f1;
 }
 
 :root{
@@ -91,10 +92,15 @@ span{
     /* to do css*/
 }
 
-#line_chart{
-    background: #00ffff;
+h1{
+    color: #000000;
+}
+
+#line_chart_container{
+    background: #ffffff;
     grid-area: line_chart;
     border-radius:var(--main-radius);
+    justify-content: stretch;
 }
 
 #pie_chart1{
