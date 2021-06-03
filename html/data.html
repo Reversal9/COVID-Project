@@ -11,12 +11,30 @@
     
     <div class="container">
         <nav class="center">Navbar</nav>
-        <div class="center" id="data1">Total confirmed</div>
-        <div class="center" id="data2">Total recovered</div>
-        <div class="center" id="data3">Total deaths</div>
-        <div class="center" id="data4">New confirmed</div>
-        <div class="center" id="data5">New recovered</div>
-        <div class="center" id="data6">New deaths</div>
+        <div class="center data_card" id="data1">
+            <h5>Total Confirmed</h5>
+            <span id="total_confirmed"></span>
+        </div>
+        <div class="center data_card" id="data2">
+            <h5>Total Recovered</h5>
+            <span id="total_recovered"></span>
+        </div>
+        <div class="center data_card" id="data3">
+            <h5>Total Deaths</h5>
+            <span id="total_deaths"></span>
+        </div>
+        <div class="center data_card" id="data4">
+            <h5>New Confirmed</h5>
+            <span id="new_confirmed"></span>
+        </div>
+        <div class="center data_card" id="data5">
+            <h5>New Recovered</h5>
+            <span id="new_recovered"></span>
+        </div>
+        <div class="center" id="data6">
+            <h5>New Deaths</h5>
+            <span id="new_deaths"></span>
+        </div>
         <div class="center" id="line_chart">line chart of cases over time</div>
         <div class="center" id="pie_chart1">pie chart of recovery %</div>
         <div class="center" id="pie_chart2">pie chart of death %</div>
@@ -24,5 +42,8 @@
         <footer class="center">Footer</footer>
         
     </div>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/data.js"></script>
+
 </body>
 </html>

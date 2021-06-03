@@ -1,11 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+body{
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
 :root{
     --main-radius: 5px;
     --main-padding: 5px;
 }
 
 .center{
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* grid layout setup*/
@@ -23,49 +32,63 @@
         "line_chart line_chart line_chart pie_chart3 pie_chart3"
         "line_chart line_chart line_chart pie_chart3 pie_chart3"
         "footer footer footer footer footer";
-    grid-gap: 0.2rem;
+    grid-gap: 1rem;
 }
 
 nav{
     background: #e8ffff;
     grid-area: nav;
     border-radius:var(--main-radius);
+    color: black;
 }
 
 #data1{
-    background: #bfe6ff;
+    background: #c0392b;
     grid-area: data1;
     border-radius:var(--main-radius);
 }
 
 #data2{
-    background: #8cd3ff;
+    background: #27ae60;
     grid-area: data2;
     border-radius:var(--main-radius);
 }
 
 #data3{
-    background:	#59bfff;
+    background:	#2c3e50;
     grid-area: data3;
     border-radius:var(--main-radius);
 }
 
 #data4{
-    background:	#26abff;
+    background:	#ff7675;
     grid-area: data4;
     border-radius:var(--main-radius);
 }
 
 #data5{
-    background:	#0da2ff;
+    background:	#00cec9;
     grid-area: data5;
     border-radius:var(--main-radius);
 }
 
 #data6{
-    background:	#009dff;
+    background:	#636e72;
     grid-area: data6;
     border-radius:var(--main-radius);
+}
+
+h5{
+    font-size: 16px;
+}
+
+/* card text */
+span{
+    font-size: 48px;
+}
+
+.data_card{
+    /* to do css*/
 }
 
 #line_chart{
@@ -99,7 +122,7 @@ footer{
 }
 
 /* mobile layout */
-@media only screen and (max-width: 550px){
+@media only screen and (max-width: 850px){
     .container{
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 0.5fr 1fr 1fr 1fr 4fr 2fr 2fr 2fr 0.5fr;
