@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,46 +8,109 @@
     <link rel="stylesheet" href="/static/css/data.css">
     <title>Document</title>
 </head>
+
 <body>
-    
-    <div class="container">
-        <nav class="center">Navbar</nav>
-        <div class="center data_card" id="data1">
-            <h5>Total Confirmed</h5>
-            <span id="total_confirmed"></span>
+    <nav class="center">Navbar</nav>
+    <div id="body_container">
+        <div id="select_container">
+            <!-- Country Select-->
+            <h5 id="country_select_header">Select Country: </h5>
+            <div >
+                
+                <div id="select_box_container">
+
+                    <div id="select_box">
+                        <div class="options_container">
+                            <div class="option">
+                                <input type="radio" class="radio" id="global" name="country">
+                                <label for="global">Global</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country1" name="country">
+                                <label for="country1">country 1</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country2" name="country">
+                                <label for="country1">country 2</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country3" name="country">
+                                <label for="country1">country 3</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country4" name="country">
+                                <label for="country1">country 4</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country5" name="country">
+                                <label for="country1">country 5</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country6" name="country">
+                                <label for="country1">country 6</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country7" name="country">
+                                <label for="country1">country 7</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country8" name="country">
+                                <label for="country1">country 8</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country9" name="country">
+                                <label for="country1">country 9</label>
+                            </div>
+                            <div class="option">
+                                <input type="radio" class="radio" id="country10" name="country">
+                                <label for="country1">country 10</label>
+                            </div>
+                        </div>
+                        <div class="selected">
+                            Global
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="center data_card" id="data2">
-            <h5>Total Recovered</h5>
-            <span id="total_recovered"></span>
+        <div id="grid_container">
+            <div class="center data_card" id="data1">
+                <h5>Total Confirmed</h5>
+                <span id="total_confirmed"></span>
+            </div>
+            <div class="center data_card" id="data2">
+                <h5>Total Recovered</h5>
+                <span id="total_recovered"></span>
+            </div>
+            <div class="center data_card" id="data3">
+                <h5>Total Deaths</h5>
+                <span id="total_deaths"></span>
+            </div>
+            <div class="center data_card" id="data4">
+                <h5>New Confirmed</h5>
+                <span id="new_confirmed"></span>
+            </div>
+            <div class="center data_card" id="data5">
+                <h5>New Recovered</h5>
+                <span id="new_recovered"></span>
+            </div>
+            <div class="center" id="data6">
+                <h5>New Deaths</h5>
+                <span id="new_deaths"></span>
+            </div>
+            <div class="center" id="line_chart_container">
+                <h1>line chart of cases over time</h1>
+                <canvas id="line_chart" height="200px"></canvas>
+            </div>
+            <div class="center" id="pie_chart1">pie chart of recovery %</div>
+            <div class="center" id="pie_chart2">pie chart of death %</div>
+            <div class="center" id="pie_chart3">pie chart of population infected</div>
         </div>
-        <div class="center data_card" id="data3">
-            <h5>Total Deaths</h5>
-            <span id="total_deaths"></span>
-        </div>
-        <div class="center data_card" id="data4">
-            <h5>New Confirmed</h5>
-            <span id="new_confirmed"></span>
-        </div>
-        <div class="center data_card" id="data5">
-            <h5>New Recovered</h5>
-            <span id="new_recovered"></span>
-        </div>
-        <div class="center" id="data6">
-            <h5>New Deaths</h5>
-            <span id="new_deaths"></span>
-        </div>
-        <div class="center" id="line_chart_container">
-            <h1>line chart of cases over time</h1>
-            <canvas id="line_chart" height="200px"></canvas>
-        </div>
-        <div class="center" id="pie_chart1">pie chart of recovery %</div>
-        <div class="center" id="pie_chart2">pie chart of death %</div>
-        <div class="center" id="pie_chart3">pie chart of population infected</div>
-        <footer class="center">Footer</footer>
-        
     </div>
+    <footer class="center">Footer</footer>
     <script src="/static/js/api.js"></script>
     <script src="/static/js/data.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
+
 </html>

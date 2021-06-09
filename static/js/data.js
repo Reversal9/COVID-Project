@@ -11,7 +11,6 @@ window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
     let location = 'south-africa'
-    console.log(location.Slug)
     loadData(location)
 }
 
@@ -137,3 +136,25 @@ function showNewRecovered(data) {
 function showNewDeaths(data) {
     document.querySelector('#new_deaths').textContent = data
 }
+
+/* Country Select */
+const selected = document.querySelector('.selected')
+const optionsContainer = document.querySelector('.options_container')
+
+const optionsList = document.querySelectorAll(".option")
+console.log(optionsList)
+;
+selected.addEventListener("click", () => {
+    console.log("hi")
+    optionsContainer.classList.toggle('active');
+})
+
+optionsList.forEach(element =>{
+
+    element.addEventListener("click", () => {
+        console.log("hi")
+        selected.innerHTML = element.querySelector("label").innerHTML
+        optionsContainer.classList.remove("active")
+    })
+})
+
