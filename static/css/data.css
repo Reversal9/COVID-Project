@@ -40,9 +40,10 @@ body{
 }
 
 #select_box{
-    width: 250px;
+    width: 400px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .options_container{
@@ -92,6 +93,7 @@ body{
     max-height: 240px;
     opacity: 1;
     overflow-y: scroll;
+    margin-top: 54px;
 }
 
 .options_container::-webkit-scrollbar{
@@ -120,6 +122,31 @@ body{
 
 #options_container label{
     cursor: pointer;
+}
+
+/* Search box */
+.search_box input{
+    width: 400px;
+    padding: 12px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    position: absolute;
+    border-radius: 8px 8px 0px 0px;
+    z-index: 100;
+    border: 8px solid #2f3640;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+}
+
+.search_box input:focus{
+    outline: none
+}
+
+#select_box .options_container.active ~ .search_box input{
+    opacity: 1;
+    pointer-events: auto;
 }
 /* grid layout setup*/
 #grid_container{
@@ -189,10 +216,6 @@ h5{
 /* card text */
 span{
     font-size: 48px;
-}
-
-.data_card{
-    /* to do css*/
 }
 
 h1{

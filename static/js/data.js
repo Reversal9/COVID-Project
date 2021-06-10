@@ -172,12 +172,21 @@ async function initializeCountrySelect() {
 function countrySelectFunction() {
     const selected = document.querySelector('.selected')
     const optionsContainer = document.querySelector('.options_container')
+    const searchBox = document.querySelector(".search_box input")
+    console.log(searchBox);
 
     const optionsList = document.querySelectorAll(".option")
     console.log(optionsList)
         ;
     selected.addEventListener("click", () => {
         optionsContainer.classList.toggle('active');
+
+        searchBox.value = ''
+        filterList('')
+
+        if(optionsContainer.classList.contains('active')){
+            searchBox.focus()
+        }
     })
 
     optionsList.forEach(element => {
@@ -188,4 +197,24 @@ function countrySelectFunction() {
             optionsContainer.classList.remove("active")
         })
     })
+
+    searchBox.addEventListener("keyup", event => {
+        console.log('key clicked');
+        filterList(event.target.value)
+    })
+
+    const filterList = searchTerm => {
+        searchTerm = searchTerm.toLowerCase()
+        optionsList.forEach(option => {
+            let label = option.firstElementChild.nextElementSibling.innerHTML.toLowerCase() /* access text in label tag */
+            /* Check if searchTerm is in label */
+            if(label.indexOf(searchTerm) != -1){
+                option.style.display = 'block'
+            } else{
+                option.style.display = 'none'
+            }
+        }) 
+    }
 }
+
+

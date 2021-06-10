@@ -9,4 +9,6 @@ L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=9Nvo0KiD7dG
     crossOrigin: true
     }).addTo(map);
 
+console.log(countriesData)
+
 L.geoJson(countriesData).addTo(map);
