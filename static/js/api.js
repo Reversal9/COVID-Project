@@ -10,8 +10,10 @@ const api_links = {
         return covid_api_url + 'summary'
     },
     countryData(country, status){
-        console.log(covid_api_url + 'country/' + country + '/status/' + status)
         return covid_api_url + 'country/' + country + '/status/' + status
+    },
+    countries(){
+        return covid_api_url + 'countries'
     }
 }
 
@@ -21,6 +23,9 @@ const covidApi = {
     },
     async getCountryData(country, status){
         return await fetchRequest(api_links.countryData(country, status))
+    },
+    async getCountries(){
+        return await fetchRequest(api_links.countries())
     }
 }
 

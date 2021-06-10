@@ -1,12 +1,3 @@
-const COLORS = {
-    confirmed: '#ff0000',
-    recovered: '#008000',
-    deaths: '#373c43',
-}
-
-let body = document.querySelector('body')
-let all_time_chart, recover_rate_chart, death_rate_chart, population_chart
-
 window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
@@ -34,7 +25,6 @@ async function loadSummary(country) {
 async function loadCountryData(country) {
     const confirmed = await covidApi.getCountryData(country, 'confirmed')
     const recovered = await covidApi.getCountryData(country, 'recovered')
-    console.log(recovered)
     const deaths = await covidApi.getCountryData(country, 'deaths')
     let countryData = {
         cases: [],
@@ -58,7 +48,8 @@ async function loadCountryData(country) {
 
 async function loadData(country) {
     await loadSummary(country)
-    await initializeLineChart(country);
+    await initializeLineChart(country)
+    await initializeCountrySelect()
 }
 
 async function initializeLineChart(country) {
@@ -74,21 +65,21 @@ async function initializeLineChart(country) {
                 fill: false,
                 borderColor: 'rgb(255, 0, 0)',
                 tension: 0.1
-              },
-              {
+            },
+            {
                 label: 'Recovered',
                 data: data.recovered,
                 fill: false,
                 borderColor: 'rgb(0, 128, 0)',
                 tension: 0.1
-              },
-              {
+            },
+            {
                 label: 'Deaths',
                 data: data.deaths,
                 fill: false,
                 borderColor: 'rgb(55, 60, 67)',
                 tension: 0.1
-              }]
+            }]
         },
         options: {
             responsive: true,
@@ -137,24 +128,64 @@ function showNewDeaths(data) {
     document.querySelector('#new_deaths').textContent = data
 }
 
-/* Country Select */
-const selected = document.querySelector('.selected')
-const optionsContainer = document.querySelector('.options_container')
-
-const optionsList = document.querySelectorAll(".option")
-console.log(optionsList)
-;
-selected.addEventListener("click", () => {
-    console.log("hi")
-    optionsContainer.classList.toggle('active');
-})
-
-optionsList.forEach(element =>{
-
-    element.addEventListener("click", () => {
-        console.log("hi")
-        selected.innerHTML = element.querySelector("label").innerHTML
-        optionsContainer.classList.remove("active")
+/* Get list of all countries */
+async function getCountries() {
+    const countriesData = await covidApi.getCountries()
+    console.log(countriesData)
+    countries = []
+    countriesData.forEach(country => {
+        countries.push(country.Country)
     })
-})
+    return countries.sort()
+}
+/* Initialize Country Select */
+async function initializeCountrySelect() {
+    countries = await getCountries();
+    const optionsContainer = document.querySelector('.options_container')
+    console.log(countries)
+    console.log(optionsContainer)
+    countries.forEach(country => {
 
+        const inputTag = document.createElement('input')
+        inputTag.setAttribute('type', 'radio')
+        inputTag.setAttribute('id', country)
+        inputTag.classList.add('radio')
+
+        const labelTag = document.createElement('label')
+        labelTag.setAttribute('for', country)
+        labelTag.innerHTML = country
+
+        const option = document.createElement('div')
+        option.classList.add('option')
+
+        option.appendChild(inputTag)
+        option.appendChild(labelTag)
+
+        optionsContainer.appendChild(option)
+
+    })
+
+    countrySelectFunction()
+}
+
+/* Country Select functionality*/
+function countrySelectFunction() {
+    const selected = document.querySelector('.selected')
+    const optionsContainer = document.querySelector('.options_container')
+
+    const optionsList = document.querySelectorAll(".option")
+    console.log(optionsList)
+        ;
+    selected.addEventListener("click", () => {
+        optionsContainer.classList.toggle('active');
+    })
+
+    optionsList.forEach(element => {
+
+        element.addEventListener("click", () => {
+            console.log(element.textContent)
+            selected.innerHTML = element.querySelector("label").innerHTML
+            optionsContainer.classList.remove("active")
+        })
+    })
+}
