@@ -82,7 +82,21 @@ async function initializeLineChart(country) {
             }]
         },
         options: {
+            maintainAspectRatio: false,
             responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Line chart of cases over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 24
+                    }
+                    
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true

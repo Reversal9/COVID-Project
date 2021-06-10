@@ -220,13 +220,15 @@ span{
 
 h1{
     color: #000000;
+    flex-grow: 1;
+    padding: 12px 24px;
+    margin: auto;
 }
 
 #line_chart_container{
     background: #ffffff;
     grid-area: line_chart;
     border-radius:var(--main-radius);
-    justify-content: stretch;
 }
 
 #pie_chart1{
