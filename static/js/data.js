@@ -1,8 +1,12 @@
+var ctx = document.getElementById('line_chart').getContext('2d')
+var line_chart
+
 window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
-    let location = 'south-africa'
+    let location = 'afghanistan'
     loadData(location)
+    await initializeCountrySelect()
 }
 
 async function loadSummary(country) {
@@ -42,20 +46,17 @@ async function loadCountryData(country) {
     deaths.forEach(element => {
         countryData.deaths.push(element.Cases)
     });
-    console.log(countryData)
     return countryData
 }
 
 async function loadData(country) {
     await loadSummary(country)
     await initializeLineChart(country)
-    await initializeCountrySelect()
 }
 
 async function initializeLineChart(country) {
     let data = await loadCountryData(country)
-    var ctx = document.getElementById('line_chart').getContext('2d');
-    var line_chart = new Chart(ctx, {
+    line_chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: data.dates,
@@ -149,19 +150,23 @@ function showNewDeaths(data) {
 /* Get list of all countries */
 async function getCountries() {
     const countriesData = await covidApi.getCountries()
-    console.log(countriesData)
+    return countriesData
+}
+
+function getAvaliableCountries(summaryData){
     countries = []
-    countriesData.forEach(country => {
+    summaryData.Countries.forEach(country => {
         countries.push(country.Country)
     })
-    return countries.sort()
+    return countries.sort();
 }
 /* Initialize Country Select */
 async function initializeCountrySelect() {
-    countries = await getCountries();
+    countriesNames = await getCountries()
+    summary = await covidApi.getSummary()
+    countries = getAvaliableCountries(summary)
+
     const optionsContainer = document.querySelector('.options_container')
-    console.log(countries)
-    console.log(optionsContainer)
     countries.forEach(country => {
 
         const inputTag = document.createElement('input')
@@ -191,14 +196,11 @@ function countrySelectFunction() {
     const selected = document.querySelector('.selected')
     const optionsContainer = document.querySelector('.options_container')
     const searchBox = document.querySelector(".search_box input")
-    console.log(searchBox);
-
     const optionsList = document.querySelectorAll(".option")
-    console.log(optionsList)
-        ;
+
     selected.addEventListener("click", () => {
         optionsContainer.classList.toggle('active');
-
+        console.log("Select Clicked")
         searchBox.value = ''
         filterList('')
 
@@ -213,6 +215,15 @@ function countrySelectFunction() {
             console.log(element.textContent)
             selected.innerHTML = element.querySelector("label").innerHTML
             optionsContainer.classList.remove("active")
+            let location 
+            countriesNames.forEach(item => {
+                if(element.textContent === item.Country){
+                    location = item.Slug
+                }
+            })
+
+            loadData(location)
+            line_chart.destroy()
         })
     })
 
@@ -234,5 +245,7 @@ function countrySelectFunction() {
         }) 
     }
 }
+
+
 
 
