@@ -95,6 +95,10 @@ async function initializeLineChart(country) {
                         size: 24
                     }
                     
+                },
+                tooltip:{
+                    intersect: false,
+                    mode: 'index'
                 }
             },
             scales: {
