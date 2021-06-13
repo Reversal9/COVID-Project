@@ -4,7 +4,7 @@ var line_chart
 window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
-    let location = 'afghanistan'
+    let location = 'Global'
     loadData(location)
     await initializeCountrySelect()
 }
@@ -13,11 +13,10 @@ async function loadSummary(country) {
     let summaryData = await covidApi.getSummary()
     console.log(summaryData)
     let summary = summaryData.Global
+    console.log(summary);
     if (!(country === 'Global')) {
         summary = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
-    console.log(summary);
-
     showTotalConfirmed(summary.TotalConfirmed)
     showTotalRecovered(summary.TotalRecovered)
     showTotalDeaths(summary.TotalDeaths)
@@ -27,25 +26,42 @@ async function loadSummary(country) {
 }
 
 async function loadCountryData(country) {
-    const confirmed = await covidApi.getCountryData(country, 'confirmed')
-    const recovered = await covidApi.getCountryData(country, 'recovered')
-    const deaths = await covidApi.getCountryData(country, 'deaths')
+    let confirmed
+    let recovered
+    let deaths
     let countryData = {
-        cases: [],
+        confirmed: [],
         recovered: [],
         deaths: [],
         dates: []
     }
-    confirmed.forEach(element => {
-        countryData.cases.push(element.Cases)
-        countryData.dates.push(element.Date.substr(0, 10))
-    });
-    recovered.forEach(element => {
-        countryData.recovered.push(element.Cases)
-    });
-    deaths.forEach(element => {
-        countryData.deaths.push(element.Cases)
-    });
+    if (!(country === 'Global')) {
+        confirmed = await covidApi.getCountryData(country, 'confirmed')
+        console.log(confirmed);
+        recovered = await covidApi.getCountryData(country, 'recovered')
+        deaths = await covidApi.getCountryData(country, 'deaths')
+
+        confirmed.forEach(element => {
+            countryData.confirmed.push(element.Cases)
+            countryData.dates.push(element.Date.substr(0, 10))
+        });
+        recovered.forEach(element => {
+            countryData.recovered.push(element.Cases)
+        });
+        deaths.forEach(element => {
+            countryData.deaths.push(element.Cases)
+        });
+    } else {
+        world_data = await covidApi.getWorldData()
+        world_data.sort((a, b) => new Date(a.Date) - new Date(b.Date))
+        console.log(world_data);
+        world_data.forEach(element => {
+            countryData.confirmed.push(element.TotalConfirmed)
+            countryData.recovered.push(element.TotalRecovered)
+            countryData.deaths.push(element.TotalDeaths)
+            countryData.dates.push(element.Date.substr(0, 10))
+        })
+    }
     return countryData
 }
 
@@ -62,7 +78,7 @@ async function initializeLineChart(country) {
             labels: data.dates,
             datasets: [{
                 label: 'Confirmed',
-                data: data.cases,
+                data: data.confirmed,
                 fill: false,
                 borderColor: 'rgb(255, 0, 0)',
                 tension: 0.1
@@ -95,9 +111,9 @@ async function initializeLineChart(country) {
                         family: "'Montserrat', sans-serif",
                         size: 24
                     }
-                    
+
                 },
-                tooltip:{
+                tooltip: {
                     intersect: false,
                     mode: 'index'
                 }
@@ -153,7 +169,7 @@ async function getCountries() {
     return countriesData
 }
 
-function getAvaliableCountries(summaryData){
+function getAvaliableCountries(summaryData) {
     countries = []
     summaryData.Countries.forEach(country => {
         countries.push(country.Country)
@@ -204,7 +220,7 @@ function countrySelectFunction() {
         searchBox.value = ''
         filterList('')
 
-        if(optionsContainer.classList.contains('active')){
+        if (optionsContainer.classList.contains('active')) {
             searchBox.focus()
         }
     })
@@ -215,12 +231,18 @@ function countrySelectFunction() {
             console.log(element.textContent)
             selected.innerHTML = element.querySelector("label").innerHTML
             optionsContainer.classList.remove("active")
-            let location 
+            let location
             countriesNames.forEach(item => {
-                if(element.textContent === item.Country){
+                if (element.textContent === item.Country) {
                     location = item.Slug
+                    
                 }
             })
+            if (location == null)
+            {
+                location = 'Global'
+            }
+            console.log(location);
 
             loadData(location)
             line_chart.destroy()
@@ -237,12 +259,12 @@ function countrySelectFunction() {
         optionsList.forEach(option => {
             let label = option.firstElementChild.nextElementSibling.innerHTML.toLowerCase() /* access text in label tag */
             /* Check if searchTerm is in label */
-            if(label.indexOf(searchTerm) != -1){
+            if (label.indexOf(searchTerm) != -1) {
                 option.style.display = 'block'
-            } else{
+            } else {
                 option.style.display = 'none'
             }
-        }) 
+        })
     }
 }
 

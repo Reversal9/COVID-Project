@@ -14,6 +14,9 @@ const api_links = {
     },
     countries(){
         return covid_api_url + 'countries'
+    },
+    world(){
+        return covid_api_url + 'world'
     }
 }
 
@@ -26,6 +29,9 @@ const covidApi = {
     },
     async getCountries(){
         return await fetchRequest(api_links.countries())
+    },
+    async getWorldData(){
+        return await fetchRequest(api_links.world())
     }
 }
 
