@@ -232,7 +232,7 @@ h1{
 }
 
 #pie_chart1{
-    background: #00e5e5;
+    background: #ffffff;
     grid-area: pie_chart1;
     border-radius:var(--main-radius);
 }

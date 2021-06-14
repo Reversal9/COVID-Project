@@ -1,19 +1,24 @@
-var ctx = document.getElementById('line_chart').getContext('2d')
 var line_chart
+var pie_recovery
+var initial = true
+var summaryData
 
 window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
     let location = 'Global'
     loadData(location)
-    await initializeCountrySelect()
+}
+
+async function initSummaryData(){
+    summaryData = await covidApi.getSummary()
 }
 
 async function loadSummary(country) {
-    let summaryData = await covidApi.getSummary()
-    console.log(summaryData)
+
+    //console.log(summaryData)
     let summary = summaryData.Global
-    console.log(summary);
+    //console.log(summary);
     if (!(country === 'Global')) {
         summary = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
@@ -37,7 +42,7 @@ async function loadCountryData(country) {
     }
     if (!(country === 'Global')) {
         confirmed = await covidApi.getCountryData(country, 'confirmed')
-        console.log(confirmed);
+        //console.log(confirmed);
         recovered = await covidApi.getCountryData(country, 'recovered')
         deaths = await covidApi.getCountryData(country, 'deaths')
 
@@ -54,7 +59,7 @@ async function loadCountryData(country) {
     } else {
         world_data = await covidApi.getWorldData()
         world_data.sort((a, b) => new Date(a.Date) - new Date(b.Date))
-        console.log(world_data);
+        //console.log(world_data);
         world_data.forEach(element => {
             countryData.confirmed.push(element.TotalConfirmed)
             countryData.recovered.push(element.TotalRecovered)
@@ -66,13 +71,16 @@ async function loadCountryData(country) {
 }
 
 async function loadData(country) {
+    await initSummaryData()
     await loadSummary(country)
-    await initializeLineChart(country)
+    await initLine(country)
+    await initPieRecovery(country)
+    await initializeCountrySelect()
 }
 
-async function initializeLineChart(country) {
+async function initLine(country) {
     let data = await loadCountryData(country)
-    line_chart = new Chart(ctx, {
+    line_chart = new Chart(document.getElementById('line_chart').getContext('2d'), {
         type: 'line',
         data: {
             labels: data.dates,
@@ -138,6 +146,50 @@ async function initializeLineChart(country) {
     });
 }
 
+async function initPieRecovery(country) {
+    let data = summaryData.Global
+    //console.log(data);
+    if (!(country === 'Global')) {
+        data = summaryData.Countries.filter(e => e.Slug === country)[0]
+    }
+    console.log(data);
+
+    pie_recovery = new Chart(document.getElementById('pie_recovery').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['confirmed', 'recovered'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [6, 94],
+                    backgroundColor: [
+                        'rgba(0, 0, 0, 0.1)',
+                        'rgb(0, 128, 0)'
+                    ]
+                }
+            ],
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Pie Chart'
+                }
+            }
+        },
+    });
+}
+
+function resetChart(){
+    line_chart.destroy()
+    pie_recovery.destroy()
+}
+
 /* update html */
 function showTotalConfirmed(data) {
     document.querySelector('#total_confirmed').textContent = data
@@ -169,7 +221,7 @@ async function getCountries() {
     return countriesData
 }
 
-function getAvaliableCountries(summaryData) {
+function getAvaliableCountries() {
     countries = []
     summaryData.Countries.forEach(country => {
         countries.push(country.Country)
@@ -179,8 +231,7 @@ function getAvaliableCountries(summaryData) {
 /* Initialize Country Select */
 async function initializeCountrySelect() {
     countriesNames = await getCountries()
-    summary = await covidApi.getSummary()
-    countries = getAvaliableCountries(summary)
+    countries = getAvaliableCountries()
 
     const optionsContainer = document.querySelector('.options_container')
     countries.forEach(country => {
@@ -204,7 +255,9 @@ async function initializeCountrySelect() {
 
     })
 
-    countrySelectFunction()
+    if(initial){
+        countrySelectFunction()
+    }
 }
 
 /* Country Select functionality*/
@@ -235,22 +288,22 @@ function countrySelectFunction() {
             countriesNames.forEach(item => {
                 if (element.textContent === item.Country) {
                     location = item.Slug
-                    
+
                 }
             })
-            if (location == null)
-            {
+            initial = false
+            if (location == null) {
                 location = 'Global'
             }
-            console.log(location);
+            //console.log(location);
 
             loadData(location)
-            line_chart.destroy()
+            resetChart()
         })
     })
 
     searchBox.addEventListener("keyup", event => {
-        console.log('key clicked');
+        //console.log('key clicked');
         filterList(event.target.value)
     })
 
