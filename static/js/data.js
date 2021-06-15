@@ -15,8 +15,7 @@ async function initSummaryData(){
 }
 
 async function loadSummary(country) {
-
-    //console.log(summaryData)
+    console.log(summaryData)
     let summary = summaryData.Global
     //console.log(summary);
     if (!(country === 'Global')) {
