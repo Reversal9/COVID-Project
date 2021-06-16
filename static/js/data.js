@@ -3,6 +3,9 @@ var pie_recovery
 var initial = true
 var summaryData
 
+const loaderWrapper = document.querySelector('.loader_wrapper')
+console.log(loaderWrapper);
+
 window.onload = async () => {
     console.log('ready...')
     /* Input for location of data */
@@ -70,11 +73,15 @@ async function loadCountryData(country) {
 }
 
 async function loadData(country) {
+    loaderWrapper.classList.add('loading')
+
     await initSummaryData()
     await loadSummary(country)
     await initLine(country)
     await initPieRecovery(country)
     await initializeCountrySelect()
+    
+    loaderWrapper.classList.remove('loading')
 }
 
 async function initLine(country) {
@@ -116,7 +123,7 @@ async function initLine(country) {
                     padding: 20,
                     font: {
                         family: "'Montserrat', sans-serif",
-                        size: 24
+                        size: 32
                     }
 
                 },
@@ -151,16 +158,19 @@ async function initPieRecovery(country) {
     if (!(country === 'Global')) {
         data = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
-    console.log(data);
+    const recoveryRate =(data.TotalRecovered / data.TotalConfirmed * 100).toFixed(2);
+    console.log(recoveryRate);
 
-    pie_recovery = new Chart(document.getElementById('pie_recovery').getContext('2d'), {
+    ctx = document.getElementById('pie_recovery').getContext('2d')
+
+    pie_recovery = new Chart(ctx, {
         type: 'doughnut',
         data: {
             labels: ['confirmed', 'recovered'],
             datasets: [
                 {
                     label: 'Dataset 1',
-                    data: [6, 94],
+                    data: [100 - recoveryRate, recoveryRate],
                     backgroundColor: [
                         'rgba(0, 0, 0, 0.1)',
                         'rgb(0, 128, 0)'
@@ -177,8 +187,18 @@ async function initPieRecovery(country) {
                 },
                 title: {
                     display: true,
-                    text: 'Chart.js Pie Chart'
+                    text: 'Current recovery rate',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 18
+                    }
+                },
+                legend: {
+                    display: true
                 }
+            
             }
         },
     });
