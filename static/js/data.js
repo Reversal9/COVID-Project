@@ -3,8 +3,8 @@ var pie_recovery
 var initial = true
 var summaryData
 
+const body = document.querySelector("body")
 const loaderWrapper = document.querySelector('.loader_wrapper')
-console.log(loaderWrapper);
 
 window.onload = async () => {
     console.log('ready...')
@@ -73,7 +73,7 @@ async function loadCountryData(country) {
 }
 
 async function loadData(country) {
-    loaderWrapper.classList.add('loading')
+    startLoading()
 
     await initSummaryData()
     await loadSummary(country)
@@ -81,7 +81,17 @@ async function loadData(country) {
     await initPieRecovery(country)
     await initializeCountrySelect()
     
+    endLoading()
+}
+
+function startLoading(){
+    loaderWrapper.classList.add('loading')
+    body.style.overflow = "hidden"
+}
+
+function endLoading(){
     loaderWrapper.classList.remove('loading')
+    body.style.overflow = "initial"
 }
 
 async function initLine(country) {
