@@ -87,6 +87,7 @@ async function loadData(country) {
 function startLoading(){
     loaderWrapper.classList.add('loading')
     body.style.overflow = "hidden"
+    body.scrollTo(0, 0)
 }
 
 function endLoading(){
