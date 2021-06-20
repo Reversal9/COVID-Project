@@ -12,20 +12,6 @@ body{
     background: #ecf0f1;
 }
 
-.center{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.filler{
-    height: 300px;
-    margin: 25px 50px;
-    border-radius: 5px;
-    background-color: powderblue;
-}
-
 .home{
     background-image: url("/res/bg.jpg");
     height: 50vh;
@@ -34,7 +20,7 @@ body{
     background-position: center center;
     position: relative;
     padding: 25px 50px;
-    color: #fff;
+    color: #ffffff;
 }
 
 #logo{
@@ -86,3 +72,77 @@ body{
     font-size: 24px;
     padding-top: 10px;
 }
+
+.main_content{
+    height: auto;
+    margin: 25px 50px;
+    border-radius: 5px;
+    background-color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 35px 0px;
+}
+
+.main_content h1{
+    font-size: 48px;
+}
+
+.main_content hr{
+    width: 50%;
+    margin: auto;
+    margin-top: 10px;
+    padding: 30px 0px;
+    border: 0; border-top: 2px solid #2f3640;
+}
+
+.list{
+    display: grid;
+    height: auto;
+    grid-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.item{
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 30px;
+    transition: 0.3s;
+    font-size: 20px;
+}
+
+.item h3{
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.icon{
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.item:hover{
+    background-color: #2f3640;
+    color: #ffffff
+}
+
+.button_container{
+    display: grid;
+    place-items: center;
+}
+
+#button{
+    border: 2px solid #3498db;
+    margin-top: 50px;
+    padding: 14px 40px;
+    border-radius: 100px;
+    text-decoration:none;
+    color: #3498db;
+    transition: 300ms ease;
+    font-size: 28px;
+  }
+  
+  #button:hover{
+    background-color: #3498db;
+    color: #ecf0f1;
+  }

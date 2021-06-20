@@ -18,6 +18,7 @@ header{
 
 .nav_links{
     list-style: none;
+    font-size: 21px;
 }
 
 .nav_links li{
@@ -110,6 +111,15 @@ footer{
     opacity: 0.4;
     font-weight: 200;
 }
+
+#footer-bottom-text{
+    margin-top: 10px;
+}
+
+#footer-link{
+    color: #e8ffff;
+}
+
 
 #github-link{
     margin: 0 10px;

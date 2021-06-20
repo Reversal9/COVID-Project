@@ -36,16 +36,43 @@
       <img class="logo" src="/res/logo.svg" alt="logo" />
       <nav>
         <ul class="nav_links">
-          <li><a href="#">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="#">Map</a></li>
-          <li id="edge_link"><a href="#">Data</a></li>
+          <li id="edge_link"><a href="data.html">Data</a></li>
         </ul>
       </nav>
     </header>
 
-    <div class="filler center">
-      <p>filler content</p>
+    <div class="main_content">
+      <h1>View the latest COVID-19 data:</h1>
+      <hr>
+      <div class="list">
+        <div class="item" id="item_1">
+          <i class="icon fas fa-arrows-alt-h"></i>
+          <h3>Compare</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, unde dolor. Voluptatibus quae deserunt illo</p>
+        </div>
+        <div class="item" id="item_2">
+          <i class="icon fas fa-globe"></i>
+          <h3>Summary</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, unde dolor. Voluptatibus quae deserunt illo</p>
+        </div>
+        <div class="item" id="item_3">
+          <i class="icon far fa-flag"></i>
+          <h3>Data</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, unde dolor. Voluptatibus quae deserunt illo</p>
+        </div>
+        <div class="item" id="item_4">
+          <i class="icon fas fa-chart-line"></i>
+          <h3>Trends</h3>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, unde dolor. Voluptatibus quae deserunt illo</p>
+        </div>
+      </div>
+      <div class="button_container">
+        <a id="button" href="data.html">Go to dashboard</a>
+      </div>
     </div>
+  </div>
 
     <footer>
       <div class="footer-content">
@@ -55,12 +82,12 @@
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur
           nostrum et quaerat dolores sed
         </p>
-        <a href="https://github.com/Reversal9/COVID-Project" target="_blank"
-          ><i id="github-link" class="fa fa-github"></i
+        <a href="https://github.com/Reversal9/COVID-Project" target="_blank"><i id="github-link" class="fa fa-github"></i
         ></a>
       </div>
       <div class="footer-bottom">
         <p>Designed by: <span>Chuyan Wang, Jonnen Chong</span></p>
+        <p id="footer-bottom-text">Source: <span><a id="footer-link" target="_blank" href="https://documenter.getpostman.com/view/10808728/SzS8rjbc">Coronavirus COVID19 API</a></span></p>
       </div>
     </footer>
 
