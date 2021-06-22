@@ -19,9 +19,18 @@ async function initMap() {
         }
     });
 
+	console.log(countriesData);
+
     //put values of cases into an array
-    const values = Object.keys(countriesData.features).map(x => x.properties.cases); // WIP NEED FIX
-    console.log(values); // WIP NEED FIX
+    const values = []
+	/*values = Object.keys(countriesData.features).map(x => x.properties.cases); // WIP NEED FIX
+    console.log(values); // WIP NEED FIX*/
+	countriesData.features.forEach(country => {
+		values.push(country.properties.cases)
+	})
+
+	console.log(values);
+	
 
     var map = L.map('map').setView([0, 0], 1);
     L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=9Nvo0KiD7dG0zZ8NTVtl', {

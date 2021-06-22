@@ -169,6 +169,10 @@ body{
     padding-right: 0;
 }
 
+.data_card{
+    padding: 20px;
+}
+
 #data1{
     background: #c0392b;
     grid-area: data1;
@@ -243,6 +247,20 @@ h1{
     background: #00b2b2;
     grid-area: pie_chart3;
     border-radius:var(--main-radius);
+}
+
+.lower_container{
+    margin-top: 1rem;
+    display: grid;
+    height: auto;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.bar_container{
+    border-radius: var(--main-radius);
+    height: 600px;
+    background-color: #ffffff;
 }
 
 /* Loader */

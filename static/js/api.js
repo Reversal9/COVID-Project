@@ -31,6 +31,7 @@ const covidApi = {
         return await fetchRequest(api_links.countries())
     },
     async getWorldData(){
+        console.log(api_links.world());
         return await fetchRequest(api_links.world())
     }
 }

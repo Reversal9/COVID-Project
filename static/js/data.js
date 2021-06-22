@@ -1,7 +1,11 @@
 var line_chart
 var pie_recovery
+var bar_1
+var bar_2
+var bar_3
 var initial = true
 var summaryData
+var countryData
 
 const body = document.querySelector("body")
 const loaderWrapper = document.querySelector('.loader_wrapper')
@@ -13,8 +17,12 @@ window.onload = async () => {
     loadData(location)
 }
 
-async function initSummaryData(){
+async function initSummaryData() {
     summaryData = await covidApi.getSummary()
+}
+
+async function initCountryData(country){
+    countryData = await loadCountryData(country)
 }
 
 async function loadSummary(country) {
@@ -37,9 +45,12 @@ async function loadCountryData(country) {
     let recovered
     let deaths
     let countryData = {
-        confirmed: [],
-        recovered: [],
-        deaths: [],
+        TotalConfirmed: [],
+        TotalRecovered: [],
+        TotalDeaths: [],
+        NewConfirmed: [],
+        NewRecovered: [],
+        NewDeaths: [],
         dates: []
     }
     if (!(country === 'Global')) {
@@ -49,23 +60,28 @@ async function loadCountryData(country) {
         deaths = await covidApi.getCountryData(country, 'deaths')
 
         confirmed.forEach(element => {
-            countryData.confirmed.push(element.Cases)
+            countryData.TotalConfirmed.push(element.Cases)
             countryData.dates.push(element.Date.substr(0, 10))
         });
         recovered.forEach(element => {
-            countryData.recovered.push(element.Cases)
+            countryData.TotalRecovered.push(element.Cases)
         });
         deaths.forEach(element => {
-            countryData.deaths.push(element.Cases)
+            countryData.TotalDeaths.push(element.Cases)
         });
+        
     } else {
         world_data = await covidApi.getWorldData()
+        console.log(world_data);
         world_data.sort((a, b) => new Date(a.Date) - new Date(b.Date))
         //console.log(world_data);
         world_data.forEach(element => {
-            countryData.confirmed.push(element.TotalConfirmed)
-            countryData.recovered.push(element.TotalRecovered)
-            countryData.deaths.push(element.TotalDeaths)
+            countryData.TotalConfirmed.push(element.TotalConfirmed)
+            countryData.TotalRecovered.push(element.TotalRecovered)
+            countryData.TotalDeaths.push(element.TotalDeaths)
+            countryData.NewConfirmed.push(element.NewConfirmed)
+            countryData.NewRecovered.push(element.NewRecovered)
+            countryData.NewDeaths.push(element.NewDeaths)
             countryData.dates.push(element.Date.substr(0, 10))
         })
     }
@@ -76,48 +92,50 @@ async function loadData(country) {
     startLoading()
 
     await initSummaryData()
+    await initCountryData(country)
     await loadSummary(country)
-    await initLine(country)
+    await initLine()
     await initPieRecovery(country)
+    await initBarOne()
     await initializeCountrySelect()
-    
+
     endLoading()
 }
 
-function startLoading(){
+function startLoading() {
     loaderWrapper.classList.add('loading')
     body.style.overflow = "hidden"
     body.scrollTo(0, 0)
 }
 
-function endLoading(){
+function endLoading() {
     loaderWrapper.classList.remove('loading')
     body.style.overflow = "initial"
 }
 
-async function initLine(country) {
-    let data = await loadCountryData(country)
+async function initLine() {
+    let data = countryData
     line_chart = new Chart(document.getElementById('line_chart').getContext('2d'), {
         type: 'line',
         data: {
             labels: data.dates,
             datasets: [{
                 label: 'Confirmed',
-                data: data.confirmed,
+                data: data.TotalConfirmed,
                 fill: false,
                 borderColor: 'rgb(255, 0, 0)',
                 tension: 0.1
             },
             {
                 label: 'Recovered',
-                data: data.recovered,
+                data: data.TotalRecovered,
                 fill: false,
                 borderColor: 'rgb(0, 128, 0)',
                 tension: 0.1
             },
             {
                 label: 'Deaths',
-                data: data.deaths,
+                data: data.TotalDeaths,
                 fill: false,
                 borderColor: 'rgb(55, 60, 67)',
                 tension: 0.1
@@ -135,6 +153,82 @@ async function initLine(country) {
                     font: {
                         family: "'Montserrat', sans-serif",
                         size: 32
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
+}
+
+async function initBarOne() {
+    var data = []
+    for (let i = 0; i < countryData.dates.length; i++){
+        data.push({
+            dates: countryData.dates[i],
+            newConfirmed: countryData.NewConfirmed[i]
+        })
+    }
+    console.log(data);
+    /* sort array of objects based on newConfirmed and returns largest 10 objects */
+    const slicedData = data.sort((a, b) => (a.newConfirmed > b.newConfirmed) ? -1 : 1).slice(0, 10)
+    label = []
+    values = []
+    slicedData.forEach(element => {
+        label.push(element.dates.substr(0, 10));
+        values.push(element.newConfirmed)
+    })
+
+    bar_1 = new Chart(document.getElementById('bar_1').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: label,
+            datasets: [{
+                label: 'New confirmed cases',
+                data: values,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            indexAxis: 'y',
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Most new confirmed cases daily',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 16
                     }
 
                 },
@@ -169,7 +263,7 @@ async function initPieRecovery(country) {
     if (!(country === 'Global')) {
         data = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
-    const recoveryRate =(data.TotalRecovered / data.TotalConfirmed * 100).toFixed(2);
+    const recoveryRate = (data.TotalRecovered / data.TotalConfirmed * 100).toFixed(2);
     console.log(recoveryRate);
 
     ctx = document.getElementById('pie_recovery').getContext('2d')
@@ -209,15 +303,18 @@ async function initPieRecovery(country) {
                 legend: {
                     display: true
                 }
-            
+
             }
         },
     });
 }
 
-function resetChart(){
+
+
+function resetChart() {
     line_chart.destroy()
     pie_recovery.destroy()
+    bar_1.destroy()
 }
 
 /* update html */
@@ -285,7 +382,7 @@ async function initializeCountrySelect() {
 
     })
 
-    if(initial){
+    if (initial) {
         countrySelectFunction()
     }
 }
