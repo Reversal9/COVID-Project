@@ -257,7 +257,7 @@ h1{
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.bar_container{
+.line_container{
     border-radius: var(--main-radius);
     height: 600px;
     background-color: #ffffff;

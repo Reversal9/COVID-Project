@@ -1,8 +1,8 @@
 var line_chart
 var pie_recovery
 var bar_1
-var bar_2
-var bar_3
+var line_1
+var line_2
 var initial = true
 var summaryData
 var countryData
@@ -11,7 +11,6 @@ const body = document.querySelector("body")
 const loaderWrapper = document.querySelector('.loader_wrapper')
 
 window.onload = async () => {
-    console.log('ready...')
     /* Input for location of data */
     let location = 'Global'
     loadData(location)
@@ -28,7 +27,6 @@ async function initCountryData(country){
 async function loadSummary(country) {
     console.log(summaryData)
     let summary = summaryData.Global
-    //console.log(summary);
     if (!(country === 'Global')) {
         summary = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
@@ -55,7 +53,6 @@ async function loadCountryData(country) {
     }
     if (!(country === 'Global')) {
         confirmed = await covidApi.getCountryData(country, 'confirmed')
-        //console.log(confirmed);
         recovered = await covidApi.getCountryData(country, 'recovered')
         deaths = await covidApi.getCountryData(country, 'deaths')
 
@@ -72,9 +69,7 @@ async function loadCountryData(country) {
         
     } else {
         world_data = await covidApi.getWorldData()
-        console.log(world_data);
         world_data.sort((a, b) => new Date(a.Date) - new Date(b.Date))
-        //console.log(world_data);
         world_data.forEach(element => {
             countryData.TotalConfirmed.push(element.TotalConfirmed)
             countryData.TotalRecovered.push(element.TotalRecovered)
@@ -95,10 +90,11 @@ async function loadData(country) {
     await initCountryData(country)
     await loadSummary(country)
     await initLine()
+    await initLineOne()
+    await initLineTwo()
     await initPieRecovery(country)
-    await initBarOne()
-    await initializeCountrySelect()
-
+    //await initBarOne()
+    if (initial){await initializeCountrySelect()}
     endLoading()
 }
 
@@ -182,7 +178,7 @@ async function initLine() {
     });
 }
 
-async function initBarOne() {
+/*async function initBarOne() {
     var data = []
     for (let i = 0; i < countryData.dates.length; i++){
         data.push({
@@ -191,7 +187,7 @@ async function initBarOne() {
         })
     }
     console.log(data);
-    /* sort array of objects based on newConfirmed and returns largest 10 objects */
+    // sort array of objects based on newConfirmed and returns largest 10 objects 
     const slicedData = data.sort((a, b) => (a.newConfirmed > b.newConfirmed) ? -1 : 1).slice(0, 10)
     label = []
     values = []
@@ -255,16 +251,140 @@ async function initBarOne() {
             }
         }
     });
+}*/
+
+async function initLineOne() {
+    let data = countryData
+    let values = []
+    for (let i = 0; i < data.dates.length; i++){
+        values.push((data.TotalRecovered[i] / data.TotalConfirmed[i] * 100).toFixed(2))
+    }
+    line_1 = new Chart(document.getElementById('line_1').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+            {
+                label: 'Recovery Rate',
+                data: values,
+                fill: false,
+                borderColor: 'rgb(0, 128, 0)',
+                backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                tension: 0.1,
+                fill: true
+            },
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Recovery Rate over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 16
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
+}
+
+async function initLineTwo() {
+    let data = countryData
+    let values = []
+    for (let i = 0; i < data.dates.length; i++){
+        values.push((data.TotalDeaths[i] / data.TotalConfirmed[i] * 100).toFixed(2))
+    }
+    line_2 = new Chart(document.getElementById('line_2').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+            {
+                label: 'Death Rate',
+                data: values,
+                fill: false,
+                borderColor: 'rgb(55, 60, 67)',
+                backgroundColor: 'rgba(55, 60, 67, 0.1)',
+                tension: 0.1,
+                fill: true
+            },
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Death Rate over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 16
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
 }
 
 async function initPieRecovery(country) {
     let data = summaryData.Global
-    //console.log(data);
     if (!(country === 'Global')) {
         data = summaryData.Countries.filter(e => e.Slug === country)[0]
     }
     const recoveryRate = (data.TotalRecovered / data.TotalConfirmed * 100).toFixed(2);
-    console.log(recoveryRate);
 
     ctx = document.getElementById('pie_recovery').getContext('2d')
 
@@ -314,7 +434,8 @@ async function initPieRecovery(country) {
 function resetChart() {
     line_chart.destroy()
     pie_recovery.destroy()
-    bar_1.destroy()
+    line_1.destroy()
+    line_2.destroy()
 }
 
 /* update html */
@@ -359,6 +480,7 @@ function getAvaliableCountries() {
 async function initializeCountrySelect() {
     countriesNames = await getCountries()
     countries = getAvaliableCountries()
+    console.log(countries);
 
     const optionsContainer = document.querySelector('.options_container')
     countries.forEach(country => {
@@ -382,9 +504,7 @@ async function initializeCountrySelect() {
 
     })
 
-    if (initial) {
-        countrySelectFunction()
-    }
+    countrySelectFunction()
 }
 
 /* Country Select functionality*/
@@ -396,7 +516,6 @@ function countrySelectFunction() {
 
     selected.addEventListener("click", () => {
         optionsContainer.classList.toggle('active');
-        console.log("Select Clicked")
         searchBox.value = ''
         filterList('')
 
@@ -408,7 +527,6 @@ function countrySelectFunction() {
     optionsList.forEach(element => {
 
         element.addEventListener("click", () => {
-            console.log(element.textContent)
             selected.innerHTML = element.querySelector("label").innerHTML
             optionsContainer.classList.remove("active")
             let location
@@ -422,7 +540,6 @@ function countrySelectFunction() {
             if (location == null) {
                 location = 'Global'
             }
-            //console.log(location);
 
             loadData(location)
             resetChart()
@@ -430,7 +547,6 @@ function countrySelectFunction() {
     })
 
     searchBox.addEventListener("keyup", event => {
-        //console.log('key clicked');
         filterList(event.target.value)
     })
 
