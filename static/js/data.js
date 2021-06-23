@@ -1,8 +1,10 @@
 var line_chart
 var pie_recovery
+var pie_deaths
 var bar_1
 var line_1
 var line_2
+
 var initial = true
 var summaryData
 var countryData
@@ -20,7 +22,7 @@ async function initSummaryData() {
     summaryData = await covidApi.getSummary()
 }
 
-async function initCountryData(country){
+async function initCountryData(country) {
     countryData = await loadCountryData(country)
 }
 
@@ -66,7 +68,7 @@ async function loadCountryData(country) {
         deaths.forEach(element => {
             countryData.TotalDeaths.push(element.Cases)
         });
-        
+
     } else {
         world_data = await covidApi.getWorldData()
         world_data.sort((a, b) => new Date(a.Date) - new Date(b.Date))
@@ -93,8 +95,9 @@ async function loadData(country) {
     await initLineOne()
     await initLineTwo()
     await initPieRecovery(country)
+    await initPieDeaths(country)
     //await initBarOne()
-    if (initial){await initializeCountrySelect()}
+    if (initial) { await initializeCountrySelect() }
     endLoading()
 }
 
@@ -256,7 +259,7 @@ async function initLine() {
 async function initLineOne() {
     let data = countryData
     let values = []
-    for (let i = 0; i < data.dates.length; i++){
+    for (let i = 0; i < data.dates.length; i++) {
         values.push((data.TotalRecovered[i] / data.TotalConfirmed[i] * 100).toFixed(2))
     }
     line_1 = new Chart(document.getElementById('line_1').getContext('2d'), {
@@ -264,15 +267,15 @@ async function initLineOne() {
         data: {
             labels: data.dates,
             datasets: [
-            {
-                label: 'Recovery Rate',
-                data: values,
-                fill: false,
-                borderColor: 'rgb(0, 128, 0)',
-                backgroundColor: 'rgba(0, 128, 0, 0.1)',
-                tension: 0.1,
-                fill: true
-            },
+                {
+                    label: 'Recovery Rate',
+                    data: values,
+                    fill: false,
+                    borderColor: 'rgb(0, 128, 0)',
+                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
             ]
         },
         options: {
@@ -286,7 +289,7 @@ async function initLineOne() {
                     padding: 20,
                     font: {
                         family: "'Montserrat', sans-serif",
-                        size: 16
+                        size: 24
                     }
 
                 },
@@ -319,7 +322,7 @@ async function initLineOne() {
 async function initLineTwo() {
     let data = countryData
     let values = []
-    for (let i = 0; i < data.dates.length; i++){
+    for (let i = 0; i < data.dates.length; i++) {
         values.push((data.TotalDeaths[i] / data.TotalConfirmed[i] * 100).toFixed(2))
     }
     line_2 = new Chart(document.getElementById('line_2').getContext('2d'), {
@@ -327,15 +330,15 @@ async function initLineTwo() {
         data: {
             labels: data.dates,
             datasets: [
-            {
-                label: 'Death Rate',
-                data: values,
-                fill: false,
-                borderColor: 'rgb(55, 60, 67)',
-                backgroundColor: 'rgba(55, 60, 67, 0.1)',
-                tension: 0.1,
-                fill: true
-            },
+                {
+                    label: 'Death Rate',
+                    data: values,
+                    fill: false,
+                    borderColor: 'rgb(55, 60, 67)',
+                    backgroundColor: 'rgba(55, 60, 67, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
             ]
         },
         options: {
@@ -349,7 +352,7 @@ async function initLineTwo() {
                     padding: 20,
                     font: {
                         family: "'Montserrat', sans-serif",
-                        size: 16
+                        size: 24
                     }
 
                 },
@@ -391,7 +394,7 @@ async function initPieRecovery(country) {
     pie_recovery = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['confirmed', 'recovered'],
+            labels: ['confirmed', 'Recovery Rate'],
             datasets: [
                 {
                     label: 'Dataset 1',
@@ -407,23 +410,81 @@ async function initPieRecovery(country) {
             maintainAspectRatio: false,
             responsive: true,
             plugins: {
-                legend: {
-                    position: 'top',
-                },
                 title: {
                     display: true,
-                    text: 'Current recovery rate',
+                    text: 'Current recovery rate: ' + recoveryRate + '%',
                     color: '#2f3640',
                     padding: 20,
                     font: {
                         family: "'Montserrat', sans-serif",
-                        size: 18
+                        size: 24
                     }
                 },
                 legend: {
-                    display: true
+                    display: false
                 }
 
+            },
+            layout: {
+                padding: {
+                    left: 5,
+                    right: 5,
+                    bottom: 5
+                }
+            }
+        },
+    });
+}
+
+async function initPieDeaths(country) {
+    let data = summaryData.Global
+    if (!(country === 'Global')) {
+        data = summaryData.Countries.filter(e => e.Slug === country)[0]
+    }
+    const deathRate = (data.TotalDeaths / data.TotalConfirmed * 100).toFixed(2);
+
+    ctx = document.getElementById('pie_deaths').getContext('2d')
+
+    pie_deaths = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['confirmed', 'Death rate'],
+            datasets: [
+                {
+                    label: 'Dataset 1',
+                    data: [100 - deathRate, deathRate],
+                    backgroundColor: [
+                        'rgba(0, 0, 0, 0.1)',
+                        'rgb(55, 60, 67)'
+                    ]
+                }
+            ],
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Current death rate: ' + deathRate + '%',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 24
+                    }
+                },
+                legend: {
+                    display: false
+                }
+
+            },
+            layout: {
+                padding: {
+                    left: 5,
+                    right: 5,
+                    bottom: 5
+                }
             }
         },
     });
@@ -434,6 +495,7 @@ async function initPieRecovery(country) {
 function resetChart() {
     line_chart.destroy()
     pie_recovery.destroy()
+    pie_deaths.destroy()
     line_1.destroy()
     line_2.destroy()
 }
