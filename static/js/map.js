@@ -62,7 +62,7 @@ async function initMap() {
 	info.addTo(map);
 
 
-	// get color depending on population density value
+	// get color depending on cases
 	function getColor(d) {
 		return d > 1000 ? '#800026' :
 				d > 500  ? '#BD0026' :
@@ -126,7 +126,7 @@ async function initMap() {
 		onEachFeature: onEachFeature
 	}).addTo(map);
 
-	map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+	map.attributionControl.addAttribution('Source: <a href="https://documenter.getpostman.com/view/10808728/SzS8rjbc">Coronavirus COVID19 API</a>');
 
 
 	var legend = L.control({position: 'bottomright'});
