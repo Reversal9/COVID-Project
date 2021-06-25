@@ -1,9 +1,45 @@
 @import url(https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css);
-#map {
-    position: absolute; 
-    width: 55%; 
-    height: 75%;
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
 }
+
+body{
+    font-family: 'Montserrat', sans-serif;
+    color: #2f3640;
+    background: #ecf0f1;
+}
+
+.map_container{
+    background-color: aquamarine;
+    display: grid;
+    place-items: center;
+    height: 500px;
+}
+
+#map {
+    width: 100%; 
+    height: 100%;
+}
+
+.main_content{
+    height: auto;
+    margin: 25px 50px;
+    border-radius: 5px;
+}
+
+.center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Map setup */
 
 .info { 
     padding: 6px 8px; 
@@ -30,4 +66,19 @@
     float: left; 
     margin-right: 8px; 
     opacity: 0.7; 
+}
+
+/* content setup */
+
+.grid_container{
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    margin-top: 1rem;
+}
+
+.chart_container{
+    height: 500px;
+    border-radius: 5px;
+    background-color: #ffffff;
 }

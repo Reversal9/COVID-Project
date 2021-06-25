@@ -1,23 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-<!-- Code begins here -->
+    <!-- Code begins here -->
 
-    <link rel="stylesheet" href="/static/css/map.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+    <link rel="stylesheet" href="/static/css/map.css" />
+    <link rel="stylesheet" href="/static/css/nav_foot.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 
 </head>
+
 <body>
 
-    <!-- Map -->
-    <div id="map"></div>
-    
+    <!-- Nav bar -->
+    <header>
+        <img class="logo" src="/res/logo.svg" alt="logo" />
+        <nav>
+            <ul class="nav_links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="map.html">Map</a></li>
+                <li id="edge_link"><a href="data.html">Data</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <div class="main_content">
+        <div class="map_container">
+            <div id="map"></div>
+        </div>
+
+        <div class="grid_container">
+            <div class="center chart_container">
+                <canvas id="bar_1"></canvas>
+            </div>
+            <div class="center chart_container">
+                <canvas id="bar_2"></canvas>
+            </div>
+            <div class="center chart_container">
+                <canvas id="bar_3"></canvas>
+            </div>
+            <div class="center chart_container">
+                Hello
+            </div>
+            <div class="center chart_container">
+                Hello
+            </div>
+            <div class="center chart_container">
+                Hello
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>About Covid-19 Tracker</h3>
+            <br />
+            <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur
+                nostrum et quaerat dolores sed
+            </p>
+            <a href="https://github.com/Reversal9/COVID-Project" target="_blank"><i id="github-link"
+                    class="fa fa-github"></i></a>
+        </div>
+        <div class="footer-bottom">
+            <p>Designed by: <span>Chuyan Wang, Jonnen Chong</span></p>
+            <p id="footer-bottom-text">
+                Source:
+                <span><a id="footer-link" target="_blank"
+                        href="https://documenter.getpostman.com/view/10808728/SzS8rjbc">Coronavirus COVID19
+                        API</a></span>
+            </p>
+        </div>
+    </footer>
+
     <script src="/static/js/api.js"></script>
     <script src="/static/js/map.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
+
 </html>
