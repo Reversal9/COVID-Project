@@ -151,22 +151,34 @@ body{
 /* grid layout setup*/
 #grid_container{
     color: #f5f6fa;
-    display: grid;
-    height: 100vh;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-areas:
-        "data1 data2 data3 pie_chart1 pie_chart1"
-        "data4 data5 data6 pie_chart1 pie_chart1"
-        "line_chart line_chart line_chart pie_chart2 pie_chart2"
-        "line_chart line_chart line_chart pie_chart2 pie_chart2"
-        "line_chart line_chart line_chart pie_chart3 pie_chart3"
-        "line_chart line_chart line_chart pie_chart3 pie_chart3";
+    /*display: grid;
     grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));*/
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.left_container{
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+    width: 66%;
+}
+.right_container{
+    display: flex;
+    flex-direction: column;
+    width: 33%;
 }
 
 #edge_link{
     padding-right: 0;
+}
+
+.data_card_container{
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
 }
 
 .data_card{
@@ -175,37 +187,31 @@ body{
 
 #data1{
     background: #c0392b;
-    grid-area: data1;
     border-radius:var(--main-radius);
 }
 
 #data2{
     background: #27ae60;
-    grid-area: data2;
     border-radius:var(--main-radius);
 }
 
 #data3{
     background:	#2c3e50;
-    grid-area: data3;
     border-radius:var(--main-radius);
 }
 
 #data4{
     background:	#ff7675;
-    grid-area: data4;
     border-radius:var(--main-radius);
 }
 
 #data5{
     background:	#00cec9;
-    grid-area: data5;
     border-radius:var(--main-radius);
 }
 
 #data6{
     background:	#636e72;
-    grid-area: data6;
     border-radius:var(--main-radius);
 }
 
@@ -227,25 +233,28 @@ h1{
 
 #line_chart_container{
     background: #ffffff;
-    grid-area: line_chart;
     border-radius:var(--main-radius);
+    margin-top: 1rem;
+    height: 600px;
 }
 
 #pie_chart1{
     background: #ffffff;
-    grid-area: pie_chart1;
     border-radius:var(--main-radius);
+    height: 50%;
+    flex-grow: 1;
 }
 
 #pie_chart2{
     background: #ffffff;
-    grid-area: pie_chart2;
     border-radius:var(--main-radius);
+    margin-top: 1rem;
+    height: 50%;
+    flex-grow: 1;
 }
 
 #pie_chart3{
     background: #00b2b2;
-    grid-area: pie_chart3;
     border-radius:var(--main-radius);
 }
 
@@ -325,19 +334,13 @@ circle{
     }
 }
 
-/* mobile layout */
-@media only screen and (max-width: 850px){
-    #grid_container{
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr 1fr 4fr 2fr 2fr 2fr;
-        height: 150vh;
-        grid-template-areas: 
-        "data1 data2"
-        "data3 data4"
-        "data5 data6"
-        "line_chart line_chart"
-        "pie_chart1 pie_chart1"
-        "pie_chart2 pie_chart2"
-        "pie_chart3 pie_chart3";
+@media only screen and (max-width: 1715px) {
+    .left_container{
+        width: 100%
     }
-}
+
+    .right_container{
+        width: 100%;
+        margin-top: 1rem;
+    }
+  }
