@@ -9,13 +9,15 @@ window.onload = async () => {
 	startLoading()
 
 	await initGlobalData()
-	await initMap()
 	await initBarOne()
 	await initBarTwo()
 	await initBarThree()
 	await initLineOne()
 	await initLineTwo()
 	await initLineThree()
+	await initLine()
+
+	await initMap()
 
 	endLoading()
 }
@@ -50,15 +52,46 @@ async function loadGlobalData() {
 	return countryData
 }
 
+
+async function loadCountryData(country) {
+	let confirmed
+	let recovered
+	let deaths
+	let countryData = {
+		Country: country,
+		TotalConfirmed: [],
+		TotalRecovered: [],
+		TotalDeaths: [],
+		dates: []
+	}
+	confirmed = await covidApi.getCountryData(country, 'confirmed')
+	recovered = await covidApi.getCountryData(country, 'recovered')
+	deaths = await covidApi.getCountryData(country, 'deaths')
+
+	confirmed.forEach(element => {
+		countryData.TotalConfirmed.push(element.Cases)
+		countryData.dates.push(element.Date.substr(0, 10))
+	});
+	recovered.forEach(element => {
+		countryData.TotalRecovered.push(element.Cases)
+	});
+	deaths.forEach(element => {
+		countryData.TotalDeaths.push(element.Cases)
+	});
+	return countryData
+
+}
+
+
 function startLoading() {
-    loaderWrapper.classList.add('loading')
-    body.style.overflow = "hidden"
-    body.scrollTo(0, 0)
+	loaderWrapper.classList.add('loading')
+	body.style.overflow = "hidden"
+	body.scrollTo(0, 0)
 }
 
 function endLoading() {
-    loaderWrapper.classList.remove('loading')
-    body.style.overflow = "initial"
+	loaderWrapper.classList.remove('loading')
+	body.style.overflow = "initial"
 }
 
 async function initMap() {
@@ -411,196 +444,272 @@ async function initBarThree() {
 }
 
 async function initLineOne() {
-    let data = globalData
-    let values = []
-    for (let i = 0; i < data.dates.length; i++) {
-        values.push(data.NewConfirmed[i])
-    }
+	let data = globalData
+	let values = []
+	for (let i = 0; i < data.dates.length; i++) {
+		values.push(data.NewConfirmed[i])
+	}
 
 	console.log(data);
-    var line_1 = new Chart(document.getElementById('line_1').getContext('2d'), {
-        type: 'line',
-        data: {
-            labels: data.dates,
-            datasets: [
-                {
-                    label: 'New confimed cases',
-                    data: values,
-                    fill: false,
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
-                    tension: 0.1,
-                    fill: true
-                },
-            ]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Daily new confirmed cases over time',
-                    color: '#2f3640',
-                    padding: 20,
-                    font: {
-                        family: "'Montserrat', sans-serif",
-                        size: 24
-                    }
+	var line_1 = new Chart(document.getElementById('line_1').getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: data.dates,
+			datasets: [
+				{
+					label: 'New confimed cases',
+					data: values,
+					fill: false,
+					borderColor: 'rgb(255, 99, 132)',
+					backgroundColor: 'rgba(255, 99, 132, 0.1)',
+					tension: 0.1,
+					fill: true
+				},
+			]
+		},
+		options: {
+			maintainAspectRatio: false,
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: 'Daily new confirmed cases over time',
+					color: '#2f3640',
+					padding: 20,
+					font: {
+						family: "'Montserrat', sans-serif",
+						size: 24
+					}
 
-                },
-                tooltip: {
-                    intersect: false,
-                    mode: 'index',
-                    position: 'nearest'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
-            layout: {
-                padding: {
-                    left: 25,
-                    right: 25
-                }
-            }
-        }
-    });
+				},
+				tooltip: {
+					intersect: false,
+					mode: 'index',
+					position: 'nearest'
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true
+				}
+			},
+			elements: {
+				point: {
+					radius: 0
+				}
+			},
+			layout: {
+				padding: {
+					left: 25,
+					right: 25
+				}
+			}
+		}
+	});
 }
 
 async function initLineTwo() {
-    let data = globalData
-    let values = []
-    for (let i = 0; i < data.dates.length; i++) {
-        values.push(data.NewRecovered[i])
-    }
+	let data = globalData
+	let values = []
+	for (let i = 0; i < data.dates.length; i++) {
+		values.push(data.NewRecovered[i])
+	}
 
 	console.log(data);
-    var line_2 = new Chart(document.getElementById('line_2').getContext('2d'), {
-        type: 'line',
-        data: {
-            labels: data.dates,
-            datasets: [
-                {
-                    label: 'New recovered cases',
-                    data: values,
-                    fill: false,
-                    borderColor: 'rgb(0, 128, 0)',
-                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
-                    tension: 0.1,
-                    fill: true
-                },
-            ]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Daily new recovered cases over time',
-                    color: '#2f3640',
-                    padding: 20,
-                    font: {
-                        family: "'Montserrat', sans-serif",
-                        size: 24
-                    }
+	var line_2 = new Chart(document.getElementById('line_2').getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: data.dates,
+			datasets: [
+				{
+					label: 'New recovered cases',
+					data: values,
+					fill: false,
+					borderColor: 'rgb(0, 128, 0)',
+					backgroundColor: 'rgba(0, 128, 0, 0.1)',
+					tension: 0.1,
+					fill: true
+				},
+			]
+		},
+		options: {
+			maintainAspectRatio: false,
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: 'Daily new recovered cases over time',
+					color: '#2f3640',
+					padding: 20,
+					font: {
+						family: "'Montserrat', sans-serif",
+						size: 24
+					}
 
-                },
-                tooltip: {
-                    intersect: false,
-                    mode: 'index',
-                    position: 'nearest'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
-            layout: {
-                padding: {
-                    left: 25,
-                    right: 25
-                }
-            }
-        }
-    });
+				},
+				tooltip: {
+					intersect: false,
+					mode: 'index',
+					position: 'nearest'
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true
+				}
+			},
+			elements: {
+				point: {
+					radius: 0
+				}
+			},
+			layout: {
+				padding: {
+					left: 25,
+					right: 25
+				}
+			}
+		}
+	});
 }
 
 async function initLineThree() {
-    let data = globalData
-    let values = []
-    for (let i = 0; i < data.dates.length; i++) {
-        values.push(data.NewDeaths[i])
-    }
+	let data = globalData
+	let values = []
+	for (let i = 0; i < data.dates.length; i++) {
+		values.push(data.NewDeaths[i])
+	}
 
 	console.log(data);
-    var line_3 = new Chart(document.getElementById('line_3').getContext('2d'), {
-        type: 'line',
-        data: {
-            labels: data.dates,
-            datasets: [
-                {
-                    label: 'New deaths',
-                    data: values,
-                    fill: false,
-                    borderColor: 'rgb(55, 60, 67)',
-                    backgroundColor: 'rgba(55, 60, 67, 0.1)',
-                    tension: 0.1,
-                    fill: true
-                },
-            ]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Daily new deaths over time',
-                    color: '#2f3640',
-                    padding: 20,
-                    font: {
-                        family: "'Montserrat', sans-serif",
-                        size: 24
-                    }
+	var line_3 = new Chart(document.getElementById('line_3').getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: data.dates,
+			datasets: [
+				{
+					label: 'New deaths',
+					data: values,
+					fill: false,
+					borderColor: 'rgb(55, 60, 67)',
+					backgroundColor: 'rgba(55, 60, 67, 0.1)',
+					tension: 0.1,
+					fill: true
+				},
+			]
+		},
+		options: {
+			maintainAspectRatio: false,
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: 'Daily new deaths over time',
+					color: '#2f3640',
+					padding: 20,
+					font: {
+						family: "'Montserrat', sans-serif",
+						size: 24
+					}
 
-                },
-                tooltip: {
-                    intersect: false,
-                    mode: 'index',
-                    position: 'nearest'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
-            layout: {
-                padding: {
-                    left: 25,
-                    right: 25
-                }
-            }
-        }
-    });
+				},
+				tooltip: {
+					intersect: false,
+					mode: 'index',
+					position: 'nearest'
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true
+				}
+			},
+			elements: {
+				point: {
+					radius: 0
+				}
+			},
+			layout: {
+				padding: {
+					left: 25,
+					right: 25
+				}
+			}
+		}
+	});
+}
+
+async function initLine() {
+	var countryData = []
+	var data_format = []
+	const countriesList = ['colombia', 'argentina', 'indonesia', 'india', 'japan', 'united-arab-emirates', 'italy', 'germany', 'brazil', 'malaysia']
+	const colors = ['rgb(26, 188, 156)', 'rgb(46, 204, 113)', 'rgb(52, 152, 219)', 'rgb(155, 89, 182)', 'rgb(52, 73, 94)', 'rgb(243, 156, 18)', 'rgb(211, 84, 0)', 'rgb(192, 57, 43)', 'rgb(149, 165, 166)', 'rgb(22, 160, 133)']
+	countryData.push(await loadCountryData(countriesList[0]))
+	countryData.push(await loadCountryData(countriesList[1]))
+	countryData.push(await loadCountryData(countriesList[2]))
+	countryData.push(await loadCountryData(countriesList[3]))
+	countryData.push(await loadCountryData(countriesList[4]))
+	countryData.push(await loadCountryData(countriesList[5]))
+	countryData.push(await loadCountryData(countriesList[6]))
+	countryData.push(await loadCountryData(countriesList[7]))
+	countryData.push(await loadCountryData(countriesList[8]))
+	countryData.push(await loadCountryData(countriesList[9]))
+
+	for (let i = 0; i < countryData.length; i++) {
+        data_format.push({
+			label: countryData[i].Country,
+			data: countryData[i].TotalConfirmed,
+			fill: false,
+			borderColor: colors[i],
+			tension: 0.1
+		})
+    }
+
+	console.log(countryData);
+	let data = globalData
+	var line_chart = new Chart(document.getElementById('country_line').getContext('2d'), {
+		type: 'line',
+		data: {
+			labels: data.dates,
+			datasets: data_format
+		},
+		options: {
+			maintainAspectRatio: false,
+			responsive: true,
+			plugins: {
+				title: {
+					display: true,
+					text: 'COVID-19 Infection Trajectories (10 countries)',
+					color: '#2f3640',
+					padding: 20,
+					font: {
+						family: "'Montserrat', sans-serif",
+						size: 32
+					}
+
+				},
+				tooltip: {
+					intersect: false,
+					mode: 'index',
+					position: 'nearest'
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true,
+					max: 800000
+				},
+			},
+			elements: {
+				point: {
+					radius: 0
+				}
+			},
+			layout: {
+				padding: {
+					left: 25,
+					right: 25
+				}
+			}
+		}
+	});
 }

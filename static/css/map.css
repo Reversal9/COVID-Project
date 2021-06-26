@@ -18,7 +18,7 @@ body{
     background-color: aquamarine;
     display: grid;
     place-items: center;
-    height: 500px;
+    height: 750px;
 }
 
 #map {
@@ -81,6 +81,13 @@ body{
     height: 500px;
     border-radius: 5px;
     background-color: #ffffff;
+}
+
+.line_container{
+    margin-top: 1rem;
+    background-color: #ffffff;
+    border-radius: 5px;
+    height: 750px;
 }
 
 /* Loader */
