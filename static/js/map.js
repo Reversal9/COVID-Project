@@ -15,7 +15,7 @@ window.onload = async () => {
 	await initLineOne()
 	await initLineTwo()
 	await initLineThree()
-	await initLine()
+	//await initLine()
 
 	await initMap()
 
@@ -112,15 +112,13 @@ async function initMap() {
 	console.log(countriesData);
 
 	//put values of cases into an array
-	const values = []
-	/*values = Object.keys(countriesData.features).map(x => x.properties.cases); // WIP NEED FIX
-	console.log(values); // WIP NEED FIX*/
+	let values = []
+	
 	countriesData.features.forEach(country => {
 		values.push(country.properties.cases)
 	})
 
-	console.log(values);
-
+	//values = values.sort((a, b) => a - b);
 
 	var map = L.map('map').setView([0, 0], 1);
 	L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=9Nvo0KiD7dG0zZ8NTVtl', {
@@ -154,13 +152,13 @@ async function initMap() {
 
 	// get color depending on cases
 	function getColor(d) {
-		return d > 1000 ? '#800026' :
-			d > 500 ? '#BD0026' :
-				d > 200 ? '#E31A1C' :
-					d > 100 ? '#FC4E2A' :
-						d > 50 ? '#FD8D3C' :
-							d > 20 ? '#FEB24C' :
-								d > 10 ? '#FED976' :
+		return d > 1000000 ? '#800026' :
+			d > 500000 ? '#BD0026' :
+				d > 200000 ? '#E31A1C' :
+					d > 100000 ? '#FC4E2A' :
+						d > 50000 ? '#FD8D3C' :
+							d > 20000 ? '#FEB24C' :
+								d > 10000 ? '#FED976' :
 									'#FFEDA0';
 	}
 
@@ -199,15 +197,15 @@ async function initMap() {
 		info.update();
 	}
 
-	function zoomToFeature(e) {
-		map.fitBounds(e.target.getBounds());
+	function redirectPage(e) {
+		window.location.replace('./data.html')
 	}
 
 	function onEachFeature(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlight,
-			click: zoomToFeature
+			click: redirectPage
 		});
 	}
 
@@ -224,7 +222,7 @@ async function initMap() {
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+			grades = [0, 10000, 20000, 50000, 100000, 200000, 500000, 1000000],
 			labels = [],
 			from, to;
 
