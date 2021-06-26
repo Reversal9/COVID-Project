@@ -13,6 +13,9 @@ window.onload = async () => {
 	await initBarOne()
 	await initBarTwo()
 	await initBarThree()
+	await initLineOne()
+	await initLineTwo()
+	await initLineThree()
 
 	endLoading()
 }
@@ -257,7 +260,7 @@ async function initBarOne() {
 					padding: 20,
 					font: {
 						family: "'Montserrat', sans-serif",
-						size: 16
+						size: 24
 					}
 
 				},
@@ -322,7 +325,7 @@ async function initBarTwo() {
 					padding: 20,
 					font: {
 						family: "'Montserrat', sans-serif",
-						size: 16
+						size: 24
 					}
 
 				},
@@ -388,7 +391,7 @@ async function initBarThree() {
 					padding: 20,
 					font: {
 						family: "'Montserrat', sans-serif",
-						size: 16
+						size: 24
 					}
 
 				},
@@ -405,4 +408,199 @@ async function initBarThree() {
 			}
 		}
 	});
+}
+
+async function initLineOne() {
+    let data = globalData
+    let values = []
+    for (let i = 0; i < data.dates.length; i++) {
+        values.push(data.NewConfirmed[i])
+    }
+
+	console.log(data);
+    var line_1 = new Chart(document.getElementById('line_1').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+                {
+                    label: 'New confimed cases',
+                    data: values,
+                    fill: false,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Daily new confirmed cases over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 24
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
+}
+
+async function initLineTwo() {
+    let data = globalData
+    let values = []
+    for (let i = 0; i < data.dates.length; i++) {
+        values.push(data.NewRecovered[i])
+    }
+
+	console.log(data);
+    var line_2 = new Chart(document.getElementById('line_2').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+                {
+                    label: 'New recovered cases',
+                    data: values,
+                    fill: false,
+                    borderColor: 'rgb(0, 128, 0)',
+                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Daily new recovered cases over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 24
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
+}
+
+async function initLineThree() {
+    let data = globalData
+    let values = []
+    for (let i = 0; i < data.dates.length; i++) {
+        values.push(data.NewDeaths[i])
+    }
+
+	console.log(data);
+    var line_3 = new Chart(document.getElementById('line_3').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: data.dates,
+            datasets: [
+                {
+                    label: 'New deaths',
+                    data: values,
+                    fill: false,
+                    borderColor: 'rgb(55, 60, 67)',
+                    backgroundColor: 'rgba(55, 60, 67, 0.1)',
+                    tension: 0.1,
+                    fill: true
+                },
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Daily new deaths over time',
+                    color: '#2f3640',
+                    padding: 20,
+                    font: {
+                        family: "'Montserrat', sans-serif",
+                        size: 24
+                    }
+
+                },
+                tooltip: {
+                    intersect: false,
+                    mode: 'index',
+                    position: 'nearest'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            layout: {
+                padding: {
+                    left: 25,
+                    right: 25
+                }
+            }
+        }
+    });
 }
