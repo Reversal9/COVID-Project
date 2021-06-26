@@ -2,12 +2,19 @@ import { countriesData } from "./countries-data.js"
 
 var globalData
 
+const body = document.querySelector("body")
+const loaderWrapper = document.querySelector('.loader_wrapper')
+
 window.onload = async () => {
+	startLoading()
+
 	await initGlobalData()
 	await initMap()
 	await initBarOne()
 	await initBarTwo()
 	await initBarThree()
+
+	endLoading()
 }
 
 async function initGlobalData() {
@@ -38,6 +45,17 @@ async function loadGlobalData() {
 	})
 
 	return countryData
+}
+
+function startLoading() {
+    loaderWrapper.classList.add('loading')
+    body.style.overflow = "hidden"
+    body.scrollTo(0, 0)
+}
+
+function endLoading() {
+    loaderWrapper.classList.remove('loading')
+    body.style.overflow = "initial"
 }
 
 async function initMap() {
