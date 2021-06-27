@@ -476,7 +476,8 @@ async function initializeCountrySelect(country) {
     console.log(countries);
 
     const selected = document.querySelector('.selected')
-    selected.innerHTML = country
+    selected.innerHTML = country.charAt(0).toUpperCase() + country.slice(1);
+      
 
     const optionsContainer = document.querySelector('.options_container')
     countries.forEach(country => {

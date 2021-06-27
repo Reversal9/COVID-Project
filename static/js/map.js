@@ -207,7 +207,10 @@ async function initMap() {
 
 	function redirectPage(e) {
 		console.log(e.target.feature.properties.slug);
-		window.location.href = "data.html?location="+e.target.feature.properties.slug
+		window.open(
+			"data.html?location="+e.target.feature.properties.slug,
+			'_blank'
+		)
 	}
 
 	function onEachFeature(feature, layer) {

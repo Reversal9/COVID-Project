@@ -1,7 +1,7 @@
 const covid_api_url = 'https://api.covid19api.com/'
 
 async function fetchRequest(url){
-    const response = await fetch(url).catch(err => alert("Please check your connection and reload the page"))
+    const response = await fetch(url)
 
 
     return response.json()
