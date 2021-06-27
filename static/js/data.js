@@ -15,6 +15,10 @@ const loaderWrapper = document.querySelector('.loader_wrapper')
 window.onload = async () => {
     /* Input for location of data */
     let location = 'Global'
+
+    const params = (new URL(document.location)).searchParams
+    const temp = params.get('location')
+    if(!(temp === 'null')){location = temp}
     loadData(location)
 }
 
@@ -97,7 +101,7 @@ async function loadData(country) {
     await initPieRecovery(country)
     await initPieDeaths(country)
     //await initBarOne()
-    if (initial) { await initializeCountrySelect() }
+    if (initial) { await initializeCountrySelect(country) }
     endLoading()
 }
 
@@ -464,10 +468,13 @@ function getAvaliableCountries() {
     return countries.sort();
 }
 /* Initialize Country Select */
-async function initializeCountrySelect() {
+async function initializeCountrySelect(country) {
     countriesNames = await getCountries()
     countries = getAvaliableCountries()
     console.log(countries);
+
+    const selected = document.querySelector('.selected')
+    selected.innerHTML = country
 
     const optionsContainer = document.querySelector('.options_container')
     countries.forEach(country => {

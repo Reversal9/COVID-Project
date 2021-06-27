@@ -19,7 +19,7 @@ window.onload = async () => {
 	await initLineOne()
 	await initLineTwo()
 	await initLineThree()
-	await initLine()
+	//await initLine()
 
 	await initMap()
 	initRadio()
@@ -101,16 +101,19 @@ function endLoading() {
 
 async function initMap() {
 	const summaryData = await covidApi.getSummary()
+	console.log(summaryData);
 
 	//add cases to countries Data
 	countriesData.features.forEach(i => {
 		summaryData.Countries.forEach(j => {
 			if (i.properties.name === j.Country) {
 				i.properties.cases = j.TotalConfirmed
+				i.properties.slug = j.Slug
 			}
 		})
 		if (i.properties.cases == null) {
 			i.properties.cases = null
+			i.properties.slug = null
 		}
 	});
 
@@ -203,7 +206,8 @@ async function initMap() {
 	}
 
 	function redirectPage(e) {
-		window.location.replace('./data.html')
+		console.log(e.target.feature.properties.slug);
+		window.location.href = "data.html?location="+e.target.feature.properties.slug
 	}
 
 	function onEachFeature(feature, layer) {
@@ -709,7 +713,6 @@ async function initLine() {
 }
 
 function updateLineChart(element){
-	console.log('key clicked');
 	let data_format = []
 	line_chart.data.labels.pop();
     line_chart.data.datasets.forEach((dataset) => {
@@ -757,18 +760,10 @@ function updateLineChart(element){
 	}
 	line_chart.update()
 }
-
-window.addEventListener('keydown', (event) => {
-	updateLineChart('TotalRecovered')
-})
-
 function initRadio(){
 	const radio_confirmed = document.querySelector('#confirmed')
 	const radio_recovered = document.querySelector('#recovered')
 	const radio_deaths = document.querySelector('#deaths')
-	console.log(radio_confirmed);
-	console.log(radio_recovered);
-	console.log(radio_deaths);
 
 	radio_confirmed.addEventListener('click', (event) => {
 		updateLineChart('TotalConfirmed')
