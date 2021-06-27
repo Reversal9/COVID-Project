@@ -112,7 +112,7 @@ async function initMap() {
 			}
 		})
 		if (i.properties.cases == null) {
-			i.properties.cases = null
+			i.properties.cases = "N/A"
 			i.properties.slug = null
 		}
 	});
@@ -137,7 +137,7 @@ async function initMap() {
 		crossOrigin: true,
 		noWrap: true,
 	}).addTo(map);
-	map.setMaxBounds(map.getBounds());
+	//map.setMaxBounds(map.getBounds());
 
 	L.geoJson(countriesData).addTo(map);
 
