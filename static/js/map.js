@@ -19,12 +19,12 @@ window.onload = async () => {
 	await initLineOne()
 	await initLineTwo()
 	await initLineThree()
-	//await initLine()
-
 	await initMap()
 	initRadio()
 
 	endLoading()
+	
+	await initLine()
 }
 
 async function initGlobalData() {
@@ -730,6 +730,7 @@ function updateLineChart(element){
 			})
 		}
 		line_chart.data.datasets = data_format
+		line_chart.options.scales.y.max = 800000
 
 	}
 	if(element === 'TotalRecovered'){

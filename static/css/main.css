@@ -14,7 +14,7 @@ body{
 
 .home{
     background-image: url("/res/bg.jpg");
-    height: 50vh;
+    height: auto;
     -webkit-background-size: cover;
     background-size: cover;
     background-position: center center;
@@ -107,7 +107,7 @@ body{
     display: grid;
     height: auto;
     grid-gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 .item{
@@ -115,7 +115,8 @@ body{
     border-radius: 5px;
     padding: 30px;
     transition: 0.3s;
-    font-size: 20px;
+    font-size: 24px;
+    line-height: 2rem;
 }
 
 .item h3{

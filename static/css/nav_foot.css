@@ -89,10 +89,6 @@ footer{
     padding-bottom: 30px;
 }
 
-.footer-content a:hover i{
-    /*color: #3498db;*/
-    border-bottom: 2px solid #ffffff;
-}
 
 .footer-bottom{
     background-color: #000000;
@@ -125,4 +121,9 @@ footer{
 
 #github-link{
     margin: 0 10px;
+    transition: color 0.4s ease;
+}
+
+#github-link:hover{
+    color:#3498db;
 }

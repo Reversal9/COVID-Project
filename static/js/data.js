@@ -18,7 +18,9 @@ window.onload = async () => {
 
     const params = (new URL(document.location)).searchParams
     const temp = params.get('location')
-    if(!(temp === 'null')){location = temp}
+    if(!(temp === null)){
+        location = temp
+    }
     loadData(location)
 }
 
