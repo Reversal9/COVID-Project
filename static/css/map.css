@@ -90,6 +90,45 @@ body{
     height: 750px;
 }
 
+/* Radio button */
+
+.radio_container{
+    display: grid;
+    place-items: center;
+    margin-bottom: 1.5rem;
+    margin-top: 2.5rem;
+}
+.radio{
+    display: flex;
+    overflow: hidden;
+    border-radius: 15px;
+    border: 2px solid #3498db;
+}
+
+.radio_input{
+    display: none;
+}
+
+.radio_label{
+    padding: 8px 14px;
+    font-size: 24px;
+    color:#3498db;
+    background: #ffffff;
+    cursor: pointer;
+    transition: background 0.25s;
+    width: 175px;
+    text-align: center;
+}
+
+.radio_label:not(:last-of-type){
+    border-right: 2px solid #3498db;
+}
+
+.radio_input:checked + .radio_label{
+    background-color: #3498db;
+    color: #ffffff;
+}
+
 /* Loader */
 #loading_container .loader_wrapper{
     width: 100%;

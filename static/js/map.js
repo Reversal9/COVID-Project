@@ -1,6 +1,10 @@
 import { countriesData } from "./countries-data.js"
 
 var globalData
+var line_chart
+var lineData
+var countriesList
+var colors
 
 const body = document.querySelector("body")
 const loaderWrapper = document.querySelector('.loader_wrapper')
@@ -15,9 +19,10 @@ window.onload = async () => {
 	await initLineOne()
 	await initLineTwo()
 	await initLineThree()
-	//await initLine()
+	await initLine()
 
 	await initMap()
+	initRadio()
 
 	endLoading()
 }
@@ -637,34 +642,25 @@ async function initLineThree() {
 }
 
 async function initLine() {
-	var countryData = []
+	lineData = []
 	var data_format = []
-	const countriesList = ['colombia', 'argentina', 'indonesia', 'india', 'japan', 'united-arab-emirates', 'italy', 'germany', 'brazil', 'malaysia']
-	const colors = ['rgb(26, 188, 156)', 'rgb(46, 204, 113)', 'rgb(52, 152, 219)', 'rgb(155, 89, 182)', 'rgb(52, 73, 94)', 'rgb(243, 156, 18)', 'rgb(211, 84, 0)', 'rgb(192, 57, 43)', 'rgb(149, 165, 166)', 'rgb(22, 160, 133)']
-	countryData.push(await loadCountryData(countriesList[0]))
-	countryData.push(await loadCountryData(countriesList[1]))
-	countryData.push(await loadCountryData(countriesList[2]))
-	countryData.push(await loadCountryData(countriesList[3]))
-	countryData.push(await loadCountryData(countriesList[4]))
-	countryData.push(await loadCountryData(countriesList[5]))
-	countryData.push(await loadCountryData(countriesList[6]))
-	countryData.push(await loadCountryData(countriesList[7]))
-	countryData.push(await loadCountryData(countriesList[8]))
-	countryData.push(await loadCountryData(countriesList[9]))
+	countriesList = ['india', 'japan', 'united-arab-emirates', 'italy', 'germany', 'brazil', 'malaysia']
+	colors = ['rgb(26, 188, 156)', 'rgb(46, 204, 113)', 'rgb(52, 152, 219)', 'rgb(155, 89, 182)', 'rgb(52, 73, 94)', 'rgb(243, 156, 18)', 'rgb(211, 84, 0)']
+	for (let i = 0; i < countriesList.length; i++){lineData.push(await loadCountryData(countriesList[i]))}
 
-	for (let i = 0; i < countryData.length; i++) {
+	for (let i = 0; i < lineData.length; i++) {
         data_format.push({
-			label: countryData[i].Country,
-			data: countryData[i].TotalConfirmed,
+			label: lineData[i].Country,
+			data: lineData[i].TotalConfirmed,
 			fill: false,
 			borderColor: colors[i],
 			tension: 0.1
 		})
     }
 
-	console.log(countryData);
+	console.log(lineData);
 	let data = globalData
-	var line_chart = new Chart(document.getElementById('country_line').getContext('2d'), {
+	line_chart = new Chart(document.getElementById('country_line').getContext('2d'), {
 		type: 'line',
 		data: {
 			labels: data.dates,
@@ -676,7 +672,7 @@ async function initLine() {
 			plugins: {
 				title: {
 					display: true,
-					text: 'COVID-19 Infection Trajectories (10 countries)',
+					text: 'COVID-19 Infection Trajectories (7 countries)',
 					color: '#2f3640',
 					padding: 20,
 					font: {
@@ -710,4 +706,77 @@ async function initLine() {
 			}
 		}
 	});
+}
+
+function updateLineChart(element){
+	console.log('key clicked');
+	let data_format = []
+	line_chart.data.labels.pop();
+    line_chart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+    line_chart.update();
+	if(element === 'TotalConfirmed'){
+		for (let i = 0; i < lineData.length; i++) {
+			data_format.push({
+				label: lineData[i].Country,
+				data: lineData[i].TotalConfirmed,
+				fill: false,
+				borderColor: colors[i],
+				tension: 0.1
+			})
+		}
+		line_chart.data.datasets = data_format
+
+	}
+	if(element === 'TotalRecovered'){
+		for (let i = 0; i < lineData.length; i++) {
+			data_format.push({
+				label: lineData[i].Country,
+				data: lineData[i].TotalRecovered,
+				fill: false,
+				borderColor: colors[i],
+				tension: 0.1
+			})
+		}
+		line_chart.data.datasets = data_format
+		line_chart.options.scales.y.max = 450000
+	}
+	if(element === 'TotalDeaths'){
+		for (let i = 0; i < lineData.length; i++) {
+			data_format.push({
+				label: lineData[i].Country,
+				data: lineData[i].TotalDeaths,
+				fill: false,
+				borderColor: colors[i],
+				tension: 0.1
+			})
+		}
+		line_chart.data.datasets = data_format
+		line_chart.options.scales.y.max = 50000
+	}
+	line_chart.update()
+}
+
+window.addEventListener('keydown', (event) => {
+	updateLineChart('TotalRecovered')
+})
+
+function initRadio(){
+	const radio_confirmed = document.querySelector('#confirmed')
+	const radio_recovered = document.querySelector('#recovered')
+	const radio_deaths = document.querySelector('#deaths')
+	console.log(radio_confirmed);
+	console.log(radio_recovered);
+	console.log(radio_deaths);
+
+	radio_confirmed.addEventListener('click', (event) => {
+		updateLineChart('TotalConfirmed')
+	})
+	radio_recovered.addEventListener('click', (event) => {
+		updateLineChart('TotalRecovered')
+	})
+	radio_deaths.addEventListener('click', (event) => {
+		updateLineChart('TotalDeaths')
+	})
 }
